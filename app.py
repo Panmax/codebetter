@@ -12,7 +12,7 @@ client = openai.OpenAI(api_key=api_key)
 def optimize_code(code):
     response = client.chat.completions.create(
         model="gpt-4o",
-        max_tokens=102400,
+        max_tokens=4096,
         temperature=0.4,
         stream=True,
         messages=[
