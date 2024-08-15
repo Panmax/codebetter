@@ -10,6 +10,12 @@ client = openai.OpenAI(api_key=api_key)
 
 
 def optimize_code(code):
+    prompt = '''帮我优化以下代码并修复可能存在的bug，在代码中用中文注释标记修改位置和原因。
+如果优化后的代码足够优雅，我将奖励你1000美金作为小费。
+请先写代码，代码写完后对之前的修改进行总结。
+注意：只输出与提问有关的内容，不要有其他多余内容。
+'''
+
     response = client.chat.completions.create(
         model="gpt-4o",
         max_tokens=4096,
@@ -18,12 +24,11 @@ def optimize_code(code):
         messages=[
             {
                 "role": "system",
-                "content": "You are a senior software enginner."
+                "content": "You are a senior software engineer."
             },
             {
                 "role": "user",
-                "content": "帮我优化以下代码并修复可能存在的bug，请先写代码，再使用中文解释修改原因。"
-                           "如果优化后的代码足够优雅，我将奖励你1000美金作为小费。"
+                "content": prompt
             },
             {
                 "role": "user",
@@ -44,7 +49,7 @@ iface = gr.Interface(
     inputs="textbox",
     outputs="markdown",
     title="Code Better",
-    description="Talk is cheap, Show me the code:",
+    description="Talk is cheap. Show me the code:",
     allow_flagging='never',
     css="footer{display:none !important}",
 )
