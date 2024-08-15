@@ -6,8 +6,19 @@ import gradio as gr
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
     raise ValueError("API key for OpenAI is not set. Please set the 'OPENAI_API_KEY' environment variable.")
-client = openai.OpenAI(api_key=api_key)
+helicone_key = os.getenv("HELICONE_API_KEY")
 
+client = openai.OpenAI(
+    api_key=api_key,
+)
+if helicone_key:
+    client = openai.OpenAI(
+        api_key=api_key,
+        base_url="https://oai.helicone.ai/v1",
+        default_headers={
+            "Helicone-Auth": f"Bearer {helicone_key}",
+        }
+    )
 
 def optimize_code(code):
     prompt = '''帮我优化以下代码并修复可能存在的bug，在代码中用中文注释标记修改位置和原因。
